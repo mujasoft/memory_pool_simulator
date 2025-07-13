@@ -360,7 +360,7 @@ def main():
     fixed_memory_pool = FixedBlockSizeMemoryPool(4096, 1024)
     fixed_memory_pool.allocate(1024, "initGuest")
     fixed_memory_pool.allocate(2048, "lidarReader")
-    fixed_memory_pool.free(3, "radarReader")
+    fixed_memory_pool.free(1, "lidarReader")
     fixed_memory_pool.print_table()
     fixed_memory_pool.print_summary_table()
     fixed_memory_pool.print_total_memory_belonging_to_owner("lidarReader")

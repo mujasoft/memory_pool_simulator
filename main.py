@@ -153,10 +153,10 @@ class FixedBlockSizeMemoryPool:
         if not rich_text:
             print("Fixed Block Size Memory Pool Summary:")
             print("-"*30)
-            print(f"Free memory:     {self.remaining_no_of_blocks}/\
+            print(f"Free memory:  {self.remaining_no_of_blocks}/\
     {self.total_no_of_blocks} blocks")
-            print(f"Total Memory:    {naturalsize(self.size, binary=True)}")
-            print(f"BlockSize:       {naturalsize(self.block_size, binary=True)}")
+            print(f"Total Memory: {naturalsize(self.size, binary=True)}")
+            print(f"BlockSize:    {naturalsize(self.block_size, binary=True)}")
             print("")
 
         if rich_text:
@@ -207,10 +207,13 @@ class FixedBlockSizeMemoryPool:
 
             total_memory = naturalsize(total*self.block_size, binary=True)
             lines = [f"Block ID: {bid}" for bid in block_ids]
-            body = "\n".join(lines + [f"\n[bold]Total = {len(block_ids)} blocks[/] or [cyan]{total_memory}[/]"])
+            body = "\n".join(lines + [f"\n[bold]Total = {len(block_ids)} "
+                                      f"blocks[/] or [cyan]{total_memory}[/]"])
 
             print("")
-            console.print(Panel(body, title=f"Total memory belonging to '[green]{owner}[/green]'", border_style="blue"))
+            console.print(Panel(body, title="Total memory belonging to" +
+                                f" '[green]{owner}[/green]'",
+                                border_style="blue"))
             print()
 
     def print_table(self, rich_text: bool = True):
@@ -242,12 +245,12 @@ class FixedBlockSizeMemoryPool:
                 owner = block['owner'] if block['owner'] else "-"
                 use = "■" if block['allocated'] else "▢"
                 if block['allocated']:
-                    table.add_row(str(block_id), owner, naturalsize(self.size,
-                                                                    binary=True),
+                    table.add_row(str(block_id), owner,
+                                  naturalsize(self.size, binary=True),
                                   use)
                 else:
-                    table.add_row(str(block_id), owner, naturalsize(self.size,
-                                                                    binary=True),
+                    table.add_row(str(block_id), owner,
+                                  naturalsize(self.size, binary=True),
                                   use)
             console.print(table)
             print()
@@ -422,7 +425,8 @@ class VariableBlockSizeMemoryPool:
             for block in self.block_table:
                 if owner == block["owner"]:
                     total = total + 1
-                    print("{:<8} {:<15}".format(block['id'][:6], block['size']))
+                    print("{:<8} {:<15}".format(block['id'][:6],
+                                                block['size']))
                     total_mem = total_mem + block["size"]
 
         if rich_text:
@@ -443,7 +447,8 @@ class VariableBlockSizeMemoryPool:
 
             console.print(table)
 
-        print(f"\nTotal = {naturalsize(total_mem, binary=True)} consisting of {total} block(s)")
+        print(f"\nTotal = {naturalsize(total_mem, binary=True)}"
+              + f" consisting of {total} block(s)")
         print("")
 
     def print_table(self, rich_text: bool = True):
@@ -451,7 +456,8 @@ class VariableBlockSizeMemoryPool:
 
         if not rich_text:
             print("Variable Block Memory Pool Table:")
-            print("{:<8} {:<15} {:<8} {:<4}".format("ID", "OWNER", "SIZE", "USE"))
+            print("{:<8} {:<15} {:<8} {:<4}".format("ID", "OWNER", "SIZE",
+                                                    "USE"))
             print("-" * 36)
 
             for block in self.block_table:
@@ -513,8 +519,10 @@ def print_demo(user_string: str, color: str = "yellow",
 def demo(sleep_interval: int = 3):
     """Slow down the output so that the audience can follow"""
 
-    print(Rule("[bold green]*** Fixed Block Size Memory Pool Demo ***[/bold green]"))
-    print("-> Creating a Fixed Block Memory Pool of 4MB with blocksize 1MB\n")
+    print(Rule("[bold green]*** Fixed Block Size Memory "
+               "Pool Demo ***[/bold green]"))
+    print("-> Creating a Fixed Block Memory Pool of 4 MiB with"
+          " blocksize 1 MiB\n")
     fixed_memory_pool = FixedBlockSizeMemoryPool(4096, 1024)
     time.sleep(sleep_interval)
 
@@ -579,6 +587,7 @@ def demo(sleep_interval: int = 3):
     var_memory_pool.print_summary_table()
     time.sleep(sleep_interval)
     var_memory_pool.print_total_memory_belonging_to_owner("sensorReader")
+    print("Notice only 2 blocks had to be allocated instead of 524,800!")
 
 
-demo(1)
+demo(3)

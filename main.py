@@ -536,7 +536,6 @@ def demo(sleep_interval: int = 3):
     print("-> Freeing up fourth block")
     time.sleep(sleep_interval)
     fixed_memory_pool.free(3, "radarReader")
-    fixed_memory_pool.print_table()
     time.sleep(sleep_interval)
 
     fixed_memory_pool.print_total_memory_belonging_to_owner("lidarReader")

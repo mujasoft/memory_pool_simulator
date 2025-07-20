@@ -1,78 +1,72 @@
+# Memory Pool Simulator (Fixed & Variable Block Sizes)
 
-# Memory Pool Simulator (Fixed & Variable Block Size)
-
-A lightweight, console-based memory pool simulation in Python.  
-Implements both **fixed** and **variable block size allocation strategies** — useful for understanding how low-level memory management works.
+A lightweight, terminal-based simulator that demonstrates how memory allocation works using both **fixed-size** and **variable-size** block strategies. This is perfect for visual learners and systems programmers. I sure wish I had something like this when I was starting out!
 
 ## Demo
-
 ![Demo of the tool](demo.gif)
 
 ---
 
 ## Features
 
-- **FixedBlockSizeMemoryPool**: A simple allocator using uniform block sizes  
-- **VariableBlockSizeMemoryPool**: A smart allocator using tiered block sizes (e.g., GB, MB, KB)  
-- **Live visualization** of memory allocation and ownership  
-- Memory freeing by block or by process name  
-- Summary reports on memory usage per owner  
-- MIT licensed and ready for reuse
+- **FixedBlockSizeMemoryPool**
+  - Allocates memory using equal-sized blocks
+- **VariableBlockSizeMemoryPool**
+  - Allocates memory using tiered sizes (e.g., GB, MB, KB)
+- **Rich terminal visualizations** powered by `rich`
+-  Supports freeing memory by block ID or by process name
+-  Summary tables showing memory usage per owner
+-  MIT Licensed — simple, clean, and reusable
 
 ---
 
-## Why This Project?
+##  Why This Project?
 
-- Designed for **systems programming students**, **embedded engineers**, or anyone interested in how **heap-style memory allocation** can be abstracted and simulated.
-- Very relevant to the RTOS world!
-- Helps visualize how allocation and fragmentation work.
-- Small, focused, and easy to understand.
+- Useful for **RTOS students**, **embedded engineers**, and anyone curious about **heap allocation strategies**
+- Helps visualize memory fragmentation and allocation efficiency
+- Great as a **teaching aid**, **interview discussion project**, or personal **learning tool**
+- Fully CLI-based and easy to extend
 
+---
 
 ## Usage
 
-Run the script to see both allocators in action:
+### Run the main demo
 
 ```bash
 python3 main.py
 ```
 
-You will see terminal output like this:
+## Dependencies
 
-```
-Fixed Block Memory Pool Table:
-ID     OWNER           USE
---------------------------
-0      initGuest       ■
-1      lidarReader     ■
-...
-```
+- Python 3.8+
+- [`rich`](https://github.com/Textualize/rich) for styled terminal output
+- [`humanize`](https://github.com/jmoiron/humanize) for readable memory sizes
 
----
-
-## Example Output (Variable Block Size)
+Install dependencies:
 
 ```bash
-Variable Block Memory Pool Table:
-ID      OWNER           SIZE     USE
-------------------------------------
-5a1f3a  initGuest       2 GB     ■
-73c2e7  sensorReader    2 MB     ■
+pip install -r requirements.txt
 ```
+## Contributing
 
----
+This is a focused educational tool — but PRs are welcome for:
+
+- Improved formatting or UX
+- More realistic allocation algorithms
+- GUI or web visualization extensions (e.g., with Tkinter or Plotly Dash)
+
+
+## Related Projects
+
+You might also like:
+
+- [Git Log Analyser](https://github.com/mujasoft/git_log_analyser) – LLM-powered commit analyser
+- [Jenkins AI Log Analyser](https://github.com/mujasoft/jenkins_ai_log_analyzer) – Pipeline log chunking + semantic search + analyser
 
 ## License
 
 MIT License  
-© 2025 Mujaheed Khan
+© 2025 [Mujaheed Khan](https://github.com/mujasoft)
 
----
-
-## Contributing
-
-This is a small educational tool, but PRs are welcome for:
-- Improvements in output formatting
-- More realistic allocation strategies
-- Integration with GUI or web visualizer
 

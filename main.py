@@ -563,6 +563,13 @@ def demo(sleep_interval: int = 3):
     var_memory_pool.print_table()
     time.sleep(sleep_interval)
 
+    print("-> Allocating 2 GiB to 'sensorReader'")
+    time.sleep(sleep_interval)
+    var_memory_pool.allocate(2147483648, "sensorReader")
+    time.sleep(sleep_interval)
+    var_memory_pool.print_table()
+    time.sleep(sleep_interval)
+
     print("-> Freeing up first block allocated to 'initGuest'")
     var_memory_pool.free(results[0]['id'], "initGuest")
     time.sleep(sleep_interval)

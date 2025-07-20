@@ -19,6 +19,14 @@
 # SOFTWARE.
 
 import uuid
+import time
+
+from humanize import naturalsize
+from rich import print
+from rich.console import Console
+from rich.panel import Panel
+from rich.rule import Rule
+from rich.table import Table
 
 
 def get_human_readable_memory_size(size):
@@ -138,49 +146,111 @@ class FixedBlockSizeMemoryPool:
         self.print_table()
         return True
 
-    def print_summary_table(self):
+    def print_summary_table(self, rich_text: bool = True):
         """Print a summary of the table.
         """
 
-        print("Fixed Block Size Memory Pool Summary:")
-        print("-"*30)
-        print(f"Free memory:     {self.remaining_no_of_blocks}/\
-{self.total_no_of_blocks} blocks")
-        print(f"Total Memory:    {self.size}")
-        print(f"BlockSize:       {self.block_size}")
-        print("")
+        if not rich_text:
+            print("Fixed Block Size Memory Pool Summary:")
+            print("-"*30)
+            print(f"Free memory:     {self.remaining_no_of_blocks}/\
+    {self.total_no_of_blocks} blocks")
+            print(f"Total Memory:    {naturalsize(self.size, binary=True)}")
+            print(f"BlockSize:       {naturalsize(self.block_size, binary=True)}")
+            print("")
 
-    def print_total_memory_belonging_to_owner(self, owner):
+        if rich_text:
+            console = Console()
+
+            table = Table(title="\n System Summary")
+            table.add_column("Free no. of blocks", style="green")
+            table.add_column("Total no. of blocks", style="cyan")
+            table.add_column("BlockSize", style="blue")
+            table.add_column("Total", style="magenta")
+
+            table.add_row(str(self.remaining_no_of_blocks),
+                          str(self.total_no_of_blocks),
+                          naturalsize(self.block_size, binary=True),
+                          naturalsize(self.size, binary=True))
+            console.print(table)
+
+    def print_total_memory_belonging_to_owner(self, owner: str,
+                                              rich_text: bool = True):
         """Print a summary of total memory usage for a certain owner.
 
         Args:
             owner (string): name of owner
         """
 
-        print(f"Total memory belonging to \"{owner}\":")
-        print("-"*30)
-        total = 0
-        for block in self.block_table:
-            if owner == block["owner"]:
-                total = total + 1
-                print(f"Block ID: {block['id']}")
+        if not rich_text:
+            print(f"Total memory belonging to \"{owner}\":")
+            print("-"*30)
+            total = 0
+            for block in self.block_table:
+                if owner == block["owner"]:
+                    total = total + 1
+                    print(f"Block ID: {block['id']}")
 
-        total_memory = total*self.block_size
-        print(f"Total = {total} blocks or {total_memory}")
-        print("")
+            total_memory = total*self.block_size
+            print(f"Total = {total} blocks or {total_memory}")
+            print("")
 
-    def print_table(self):
+        if rich_text:
+            console = Console()
+
+            total = 0
+            block_ids = []
+            for block in self.block_table:
+                if owner == block["owner"]:
+                    total = total + 1
+                    block_ids.append(str(block['id']))
+
+            total_memory = naturalsize(total*self.block_size, binary=True)
+            lines = [f"Block ID: {bid}" for bid in block_ids]
+            body = "\n".join(lines + [f"\n[bold]Total = {len(block_ids)} blocks[/] or [cyan]{total_memory}[/]"])
+
+            print("")
+            console.print(Panel(body, title=f"Total memory belonging to '[green]{owner}[/green]'", border_style="blue"))
+            print()
+
+    def print_table(self, rich_text: bool = True):
         """Print a visualization of the current state of all blocks."""
-        print("Fixed Block Memory Pool Table:")
-        print("{:<6} {:<15} {:<4}".format("ID", "OWNER", "USE"))
-        print("-" * 26)
 
-        for block in self.block_table:
-            block_id = block['id']
-            owner = block['owner'] if block['owner'] else "-"
-            use = "■" if block['allocated'] else "▢"
-            print("{:<6} {:<15} {:<4}".format(block_id, owner, use))
-        print("")
+        if not rich_text:
+            print("Fixed Block Memory Pool Table:")
+            print("{:<6} {:<15} {:<4}".format("ID", "OWNER", "USE"))
+            print("-" * 26)
+
+            for block in self.block_table:
+                block_id = block['id']
+                owner = block['owner'] if block['owner'] else "-"
+                use = "■" if block['allocated'] else "▢"
+                print("{:<6} {:<15} {:<4}".format(block_id, owner, use))
+            print("")
+
+        if rich_text:
+            console = Console()
+
+            table = Table(title="\nMemory Block Table")
+            table.add_column("ID", style="blue")
+            table.add_column("OWNER", style="cyan")
+            table.add_column("SIZE", style="magenta")
+            table.add_column("USE", style="purple")
+
+            for block in self.block_table:
+                block_id = block['id']
+                owner = block['owner'] if block['owner'] else "-"
+                use = "■" if block['allocated'] else "▢"
+                if block['allocated']:
+                    table.add_row(str(block_id), owner, naturalsize(self.size,
+                                                                    binary=True),
+                                  use)
+                else:
+                    table.add_row(str(block_id), owner, naturalsize(self.size,
+                                                                    binary=True),
+                                  use)
+            console.print(table)
+            print()
 
 
 class VariableBlockSizeMemoryPool:
@@ -308,51 +378,105 @@ class VariableBlockSizeMemoryPool:
                 return True
         return False
 
-    def print_summary_table(self):
+    def print_summary_table(self, rich_text: bool = True):
         """Print a summary of the table.
         """
 
-        print("Summary of Entire System:")
-        print("-"*30)
-        print(f"Free memory   {self.remaining_size}")
-        print(f"Total Memory  {self.size}")
-        print()
+        if not rich_text:
+            print("Summary of Entire System:")
+            print("-"*30)
+            print(f"Free memory   {self.remaining_size}")
+            print(f"Total Memory  {self.size}")
+            print()
 
-    def print_total_memory_belonging_to_owner(self, owner):
+        if rich_text:
+
+            free_percentage = round(100*(self.remaining_size/self.size))
+            console = Console()
+
+            table = Table(title="\nSystem Summary")
+            table.add_column("FREE", style="green")
+            table.add_column("TOTAL", style="cyan")
+
+            table.add_row(naturalsize(self.remaining_size, binary=True)
+                          + f" ({free_percentage}%)",
+                          naturalsize(self.size, binary=True))
+
+            console.print(table)
+            print()
+
+    def print_total_memory_belonging_to_owner(self, owner: str,
+                                              rich_text: bool = True):
         """Print a summary of total memory usage for a certain owner.
 
         Args:
             owner (string): name of owner
         """
 
-        print(f"Total memory belonging to \"{owner}\":")
-        print("{:<8} {:<15}".format("ID", "SIZE"))
-        print("-"*30)
-        total = 0
-        total_mem = 0
-        for block in self.block_table:
-            if owner == block["owner"]:
-                total = total + 1
-                print("{:<8} {:<15}".format(block['id'][:6], block['size']))
-                total_mem = total_mem + block["size"]
+        if not rich_text:
+            print(f"Total memory belonging to '{owner}':")
+            print("{:<8} {:<15}".format("ID", "SIZE"))
+            print("-"*30)
+            total = 0
+            total_mem = 0
+            for block in self.block_table:
+                if owner == block["owner"]:
+                    total = total + 1
+                    print("{:<8} {:<15}".format(block['id'][:6], block['size']))
+                    total_mem = total_mem + block["size"]
 
-        print(f"\nTotal = {total_mem} consisting of {total} block(s)")
+        if rich_text:
+            console = Console()
+
+            table = Table(title=f"\nTotal memory belonging to '{owner}'")
+            table.add_column("ID", style="magenta")
+            table.add_column("SIZE", justify="right", style="blue")
+
+            total = 0
+            total_mem = 0
+            for block in self.block_table:
+                if owner == block["owner"]:
+                    total = total + 1
+                    table.add_row(block['id'], naturalsize(block['size'],
+                                  binary=True))
+                    total_mem = total_mem + block["size"]
+
+            console.print(table)
+
+        print(f"\nTotal = {naturalsize(total_mem, binary=True)} consisting of {total} block(s)")
         print("")
 
-    def print_table(self):
+    def print_table(self, rich_text: bool = True):
         """Print a visualization of the current state of all the blocks."""
-        print("Variable Block Memory Pool Table:")
-        print("{:<8} {:<15} {:<8} {:<4}".format("ID", "OWNER", "SIZE", "USE"))
-        print("-" * 36)
 
-        for block in self.block_table:
-            short_id = block['id'][:6]  # Truncate UUID for readability
-            owner = block['owner'] if block['owner'] else "-"
-            size = get_human_readable_memory_size(block['size'])
-            use = "■" if block['allocated'] else "▢"
-            print("{:<8} {:<15} {:<8} {:<4}".format(short_id, owner, size,
-                                                    use))
-        print()
+        if not rich_text:
+            print("Variable Block Memory Pool Table:")
+            print("{:<8} {:<15} {:<8} {:<4}".format("ID", "OWNER", "SIZE", "USE"))
+            print("-" * 36)
+
+            for block in self.block_table:
+                short_id = block['id'][:6]  # Truncate UUID for readability
+                owner = block['owner'] if block['owner'] else "-"
+                size = get_human_readable_memory_size(block['size'])
+                use = "■" if block['allocated'] else "▢"
+                print("{:<8} {:<15} {:<8} {:<4}".format(short_id, owner, size,
+                                                        use))
+            print()
+
+        if rich_text:
+            console = Console()
+
+            table = Table(title="\nVariable Block Memory Pool Table")
+            table.add_column("ID", style="magenta")
+            table.add_column("OWNER", style="cyan")
+            table.add_column("SIZE", justify="right", style="blue")
+
+            for block in self.block_table:
+                table.add_row(str(block['id']), block['owner'],
+                              naturalsize(block['size'], binary=True))
+
+            console.print(table)
+            print()
 
 
 def main():
@@ -378,4 +502,77 @@ def main():
     var_memory_pool.print_total_memory_belonging_to_owner("sensorReader")
 
 
-main()
+def print_demo(user_string: str, color: str = "yellow",
+               style: str = "bold"):
+    """Punchy looking output for demo"""
+
+    print(f"[{color}]{user_string} [/{color}]")
+    print()
+
+
+def demo(sleep_interval: int = 3):
+    """Slow down the output so that the audience can follow"""
+
+    print(Rule("[bold green]*** Fixed Block Size Memory Pool Demo ***[/bold green]"))
+    print("-> Creating a Fixed Block Memory Pool of 4MB with blocksize 1MB\n")
+    fixed_memory_pool = FixedBlockSizeMemoryPool(4096, 1024)
+    time.sleep(sleep_interval)
+
+    print("-> Allocating 1 MiB to 'initGuest'")
+    time.sleep(sleep_interval)
+    fixed_memory_pool.allocate(1024, "initGuest")
+    time.sleep(sleep_interval)
+
+    print("-> Allocating 2 MiB to 'lidarReader'")
+    time.sleep(sleep_interval)
+    fixed_memory_pool.allocate(2048, "lidarReader")
+    time.sleep(sleep_interval)
+
+    print("-> Allocating 1 MiB to 'radarReader'")
+    time.sleep(sleep_interval)
+    fixed_memory_pool.allocate(1024, "radarReader")
+    time.sleep(sleep_interval)
+
+    print("-> Freeing up fourth block")
+    time.sleep(sleep_interval)
+    fixed_memory_pool.free(3, "radarReader")
+    fixed_memory_pool.print_table()
+    time.sleep(sleep_interval)
+
+    fixed_memory_pool.print_total_memory_belonging_to_owner("lidarReader")
+    time.sleep(sleep_interval)
+
+    print(Rule("[green]*** Variable Block Size Memory Pool Demo  ***[/green]"))
+    time.sleep(sleep_interval)
+    print("-> Creating Variable Block Sized Pool of 16 GiB with block sizes"
+          " of 2 GiB, 2 MiB and 4 KiB.\n")
+    var_memory_pool = VariableBlockSizeMemoryPool(17179869184,
+                                                  [2147483648, 2097152,
+                                                   4096])
+    time.sleep(sleep_interval)
+
+    print("-> Allocating 10 GiB to 'initGuest'")
+    results = var_memory_pool.allocate(10737418240, "initGuest")
+    time.sleep(sleep_interval)
+    var_memory_pool.print_table()
+    time.sleep(sleep_interval)
+
+    print("-> Allocating 2 MiB to 'sensorReader'")
+    time.sleep(sleep_interval)
+    var_memory_pool.allocate(2097152, "sensorReader")
+    time.sleep(sleep_interval)
+    var_memory_pool.print_table()
+    time.sleep(sleep_interval)
+
+    print("-> Freeing up first block allocated to 'initGuest'")
+    var_memory_pool.free(results[0]['id'], "initGuest")
+    time.sleep(sleep_interval)
+    var_memory_pool.print_table()
+    time.sleep(sleep_interval)
+
+    var_memory_pool.print_summary_table()
+    time.sleep(sleep_interval)
+    var_memory_pool.print_total_memory_belonging_to_owner("sensorReader")
+
+
+demo(1)

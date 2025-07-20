@@ -4,6 +4,10 @@
 A lightweight, console-based memory pool simulation in Python.  
 Implements both **fixed** and **variable block size allocation strategies** — useful for understanding how low-level memory management works.
 
+## Demo
+
+![Demo of the tool](demo.gif)
+
 ---
 
 ## Features

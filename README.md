@@ -14,7 +14,6 @@ A lightweight, terminal-based simulator that demonstrates how memory allocation 
 - **VariableBlockSizeMemoryPool**
   - Allocates memory using tiered sizes (e.g., GB, MB, KB)
 - **Rich terminal visualizations** powered by `rich`
--  Supports freeing memory by block ID or by process name
 -  Summary tables showing memory usage per owner
 -  MIT Licensed — simple, clean, and reusable
 
@@ -25,7 +24,6 @@ A lightweight, terminal-based simulator that demonstrates how memory allocation 
 - Useful for **RTOS students**, **embedded engineers**, and anyone curious about **heap allocation strategies**
 - Helps visualize memory fragmentation and allocation efficiency
 - Great as a **teaching aid**, **interview discussion project**, or personal **learning tool**
-- Fully CLI-based and easy to extend
 
 ---
 
@@ -46,7 +44,7 @@ python3 main.py
 Install dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 ## Contributing
 
@@ -54,7 +52,6 @@ This is a focused educational tool — but PRs are welcome for:
 
 - Improved formatting or UX
 - More realistic allocation algorithms
-- GUI or web visualization extensions (e.g., with Tkinter or Plotly Dash)
 
 
 ## Related Projects

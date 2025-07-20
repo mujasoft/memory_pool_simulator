@@ -212,7 +212,7 @@ class FixedBlockSizeMemoryPool:
 
             print("")
             console.print(Panel(body, title="Total memory belonging to" +
-                                f" '[green]{owner}[/green]'",
+                                f" '[green]{owner}[/green]'", 
                                 border_style="blue"))
             print()
 
@@ -245,7 +245,7 @@ class FixedBlockSizeMemoryPool:
                 owner = block['owner'] if block['owner'] else "-"
                 use = "■" if block['allocated'] else "▢"
                 if block['allocated']:
-                    table.add_row(str(block_id), owner,
+                    table.add_row(str(block_id), owner, 
                                   naturalsize(self.size, binary=True),
                                   use)
                 else:
@@ -425,7 +425,7 @@ class VariableBlockSizeMemoryPool:
             for block in self.block_table:
                 if owner == block["owner"]:
                     total = total + 1
-                    print("{:<8} {:<15}".format(block['id'][:6],
+                    print("{:<8} {:<15}".format(block['id'][:6], 
                                                 block['size']))
                     total_mem = total_mem + block["size"]
 
@@ -447,7 +447,7 @@ class VariableBlockSizeMemoryPool:
 
             console.print(table)
 
-        print(f"\nTotal = {naturalsize(total_mem, binary=True)}"
+        print(f"\nTotal = {naturalsize(total_mem, binary=True)}" 
               + f" consisting of {total} block(s)")
         print("")
 
@@ -456,7 +456,7 @@ class VariableBlockSizeMemoryPool:
 
         if not rich_text:
             print("Variable Block Memory Pool Table:")
-            print("{:<8} {:<15} {:<8} {:<4}".format("ID", "OWNER", "SIZE",
+            print("{:<8} {:<15} {:<8} {:<4}".format("ID", "OWNER", "SIZE", 
                                                     "USE"))
             print("-" * 36)
 
@@ -587,7 +587,7 @@ def demo(sleep_interval: int = 3):
     var_memory_pool.print_summary_table()
     time.sleep(sleep_interval)
     var_memory_pool.print_total_memory_belonging_to_owner("sensorReader")
-    print("Notice only 2 blocks had to be allocated instead of 524,800!")
+    print("Notice only 2 blocks had to be allocated instead of 524,800")
 
 
 demo(3)

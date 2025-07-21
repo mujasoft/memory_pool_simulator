@@ -1,6 +1,12 @@
+![Python](https://img.shields.io/badge/python-3.8+-blue)
+![License](https://img.shields.io/github/license/mujasoft/memory_pool_simulator)
+![Status](https://img.shields.io/badge/status-stable-brightgreen)
+![Demo](https://img.shields.io/badge/demo-available-brightgreen)
+
+
 # Memory Pool Simulator (Fixed & Variable Block Sizes)
 
-A lightweight, terminal-based simulator that demonstrates how memory allocation works using both **fixed-size** and **variable-size** block strategies. This is perfect for visual learners and systems programmers. I sure wish I had something like this when I was starting out!
+A lightweight, terminal-based simulator that demonstrates how memory allocation works using both **fixed-size** and **variable-size** block strategies. Perfect for visual learners and systems programmers — I wish I had a tool like this when I was starting out!
 
 ## Demo
 ![Demo of the tool](demo.gif)

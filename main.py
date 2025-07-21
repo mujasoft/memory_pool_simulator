@@ -543,7 +543,7 @@ def demo(sleep_interval: int = 3):
     print(Rule("[bold green]*** Fixed Block Size Memory "
                "Pool Demo ***[/bold green]"))
     print("-> Creating a Fixed Block Memory Pool of 4 KiB with"
-          " blocksize of 1 KiB\n")
+          " block size of 1 KiB\n")
     fixed_memory_pool = FixedBlockSizeMemoryPool(4096, 1024)
     time.sleep(sleep_interval)
 

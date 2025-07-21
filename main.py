@@ -147,7 +147,11 @@ class FixedBlockSizeMemoryPool:
         return True
 
     def print_summary_table(self, rich_text: bool = True):
-        """Print a summary of the table.
+        """Print System Summary.
+
+        Args:
+            rich_text (bool, optional): Specify whether to use rich text.
+                                        Defaults to True.
         """
 
         if not rich_text:
@@ -180,6 +184,8 @@ class FixedBlockSizeMemoryPool:
 
         Args:
             owner (string): name of owner
+            rich_text (bool): Use rich text if set to True.
+                              Defaults to True.
         """
 
         if not rich_text:
@@ -217,7 +223,12 @@ class FixedBlockSizeMemoryPool:
             print()
 
     def print_table(self, rich_text: bool = True):
-        """Print a visualization of the current state of all blocks."""
+        """Print the block table.
+
+        Args:
+            rich_text (bool, optional): Use rich text if set to true.
+                                        Defaults to True.
+        """
 
         if not rich_text:
             print("Fixed Block Memory Pool Table:")
@@ -382,7 +393,10 @@ class VariableBlockSizeMemoryPool:
         return False
 
     def print_summary_table(self, rich_text: bool = True):
-        """Print a summary of the table.
+        """Print summary of system.
+
+        Args:
+            rich_text (bool, optional): Use rich text. Defaults to True.
         """
 
         if not rich_text:
@@ -414,6 +428,8 @@ class VariableBlockSizeMemoryPool:
 
         Args:
             owner (string): name of owner
+            rich_text (bool): Specify use of rich text.
+                              Defaults to True.
         """
 
         if not rich_text:
@@ -452,7 +468,12 @@ class VariableBlockSizeMemoryPool:
         print("")
 
     def print_table(self, rich_text: bool = True):
-        """Print a visualization of the current state of all the blocks."""
+        """Print block table
+
+        Args:
+            rich_text (bool, optional): Specify use of rich text.
+                                        Defaults to True.
+        """
 
         if not rich_text:
             print("Variable Block Memory Pool Table:")
@@ -510,7 +531,7 @@ def main():
 
 def print_demo(user_string: str, color: str = "yellow",
                style: str = "bold"):
-    """Punchy looking output for demo"""
+    """Punchy looking output for demo."""
 
     print(f"[{color}]{user_string} [/{color}]")
     print()

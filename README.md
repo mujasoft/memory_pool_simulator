@@ -18,7 +18,7 @@ A lightweight, terminal-based simulator that demonstrates how memory allocation 
 - **VariableBlockSizeMemoryPool**
   - Allocates memory using tiered sizes (e.g., GB, MB, KB)
 - **Rich terminal visualizations** powered by `rich`
--  Summary tables showing memory usage per owner
+-  System Summary Tables
 -  MIT Licensed — simple, clean, and reusable
 
 ---

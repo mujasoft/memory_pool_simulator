@@ -38,7 +38,7 @@ def get_human_readable_memory_size(size):
     Returns:
         str: a nice human readable string. E.g. "4kb instead 4096".
     """
-    suffixes = ['B', 'KB', 'MB', 'GB', 'TB']
+    suffixes = ['iB', 'KiB', 'MiB', 'GiB', 'TiB']
     i = 0
     while size >= 1024 and i < len(suffixes) - 1:
         size //= 1024

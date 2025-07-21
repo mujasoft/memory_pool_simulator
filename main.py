@@ -257,11 +257,11 @@ class FixedBlockSizeMemoryPool:
                 use = "■" if block['allocated'] else "▢"
                 if block['allocated']:
                     table.add_row(str(block_id), owner, 
-                                  naturalsize(self.size, binary=True),
+                                  naturalsize(self.block_size, binary=True),
                                   use)
                 else:
                     table.add_row(str(block_id), owner,
-                                  naturalsize(self.size, binary=True),
+                                  naturalsize(self.block_size, binary=True),
                                   use)
             console.print(table)
             print()
@@ -542,22 +542,22 @@ def demo(sleep_interval: int = 3):
 
     print(Rule("[bold green]*** Fixed Block Size Memory "
                "Pool Demo ***[/bold green]"))
-    print("-> Creating a Fixed Block Memory Pool of 4 MiB with"
-          " blocksize 1 MiB\n")
+    print("-> Creating a Fixed Block Memory Pool of 4 KiB with"
+          " blocksize of 1 KiB\n")
     fixed_memory_pool = FixedBlockSizeMemoryPool(4096, 1024)
     time.sleep(sleep_interval)
 
-    print("-> Allocating 1 MiB to 'initGuest'")
+    print("-> Allocating 1 KiB to 'initGuest'")
     time.sleep(sleep_interval)
     fixed_memory_pool.allocate(1024, "initGuest")
     time.sleep(sleep_interval)
 
-    print("-> Allocating 2 MiB to 'lidarReader'")
+    print("-> Allocating 2 KiB to 'lidarReader'")
     time.sleep(sleep_interval)
     fixed_memory_pool.allocate(2048, "lidarReader")
     time.sleep(sleep_interval)
 
-    print("-> Allocating 1 MiB to 'radarReader'")
+    print("-> Allocating 1 KiB to 'radarReader'")
     time.sleep(sleep_interval)
     fixed_memory_pool.allocate(1024, "radarReader")
     time.sleep(sleep_interval)
